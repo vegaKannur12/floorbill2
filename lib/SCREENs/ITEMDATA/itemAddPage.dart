@@ -20,7 +20,7 @@ import 'package:badges/badges.dart' as badges;
 
 class ItemAddPage extends StatefulWidget {
   final String cardno;
- 
+
   const ItemAddPage({super.key, required this.cardno});
 
   @override
@@ -306,7 +306,7 @@ class _ItemAddPageState extends State<ItemAddPage> {
                               width: 230,
                               child: GestureDetector(
                                 child: TextFormField(
-                                    // focusNode: barfocus,
+                                    focusNode: barfocus,
                                     controller: itembarcodctrl,
                                     autofocus: true,
                                     onChanged: (val) {
@@ -439,10 +439,15 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                               height: 35,
                                                               child: ListTile(
                                                                 title: Row(
-                                                                  children: [Text(
+                                                                  children: [
+                                                                    Text(
                                                                         "BARCODE    : "),
                                                                     Text(
-                                                                        "${value.selectedBarcodeList[index]["Barcode"].toString().trimLeft()}",style: TextStyle(fontWeight: FontWeight.bold),),
+                                                                      "${value.selectedBarcodeList[index]["Barcode"].toString().trimLeft()}",
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -496,7 +501,11 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                                               FontWeight.w500),
                                                                     ),
                                                                     Text(
-                                                                        " TAX   : ${value.selectedBarcodeList[index]["TaxPer"].toString()} %",style: TextStyle(fontSize: 14),),
+                                                                      " TAX   : ${value.selectedBarcodeList[index]["TaxPer"].toString()} %",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -507,7 +516,6 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                             Container(
                                                                 padding: EdgeInsets
                                                                     .only(
-                                                                     
                                                                         bottom:
                                                                             15),
                                                                 decoration: BoxDecoration(
@@ -804,7 +812,8 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                                                 Provider.of<Controller>(context, listen: false).clearSelectedBarcode(context);
                                                                                 // Provider.of<Controller>(context, listen: false).setshowdata(false);
                                                                                 itembarcodctrl.clear();
-                                                                               
+                                                                                barfocus.requestFocus();
+                                                                                // FocusScope.of(context).previousFocus();
                                                                                 setState(() {});
                                                                               });
                                                                             }
@@ -817,7 +826,8 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                                                 const EdgeInsets.only(top: 12.0, bottom: 12),
                                                                             child:
                                                                                 Text(
-                                                                              "ADD TO BAG ${value.bag_no.toString().toUpperCase()}",overflow: TextOverflow.ellipsis,
+                                                                              "ADD TO BAG ${value.bag_no.toString().toUpperCase()}",
+                                                                              overflow: TextOverflow.ellipsis,
                                                                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Theme.of(context).secondaryHeaderColor),
                                                                             ),
                                                                           ),
@@ -849,8 +859,7 @@ class _ItemAddPageState extends State<ItemAddPage> {
     );
   }
 
-  Future<void> ShowBottomSeet(BuildContext context) 
-  {
+  Future<void> ShowBottomSeet(BuildContext context) {
     return showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
