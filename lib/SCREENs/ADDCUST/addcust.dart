@@ -252,6 +252,8 @@ class _ADDCUSTOMERState extends State<ADDCUSTOMER> {
                               // printcust.add(value.cardNoctrl.text);
                               print("SAved");
                             } else {
+                              if (value.custDetailsList.isNotEmpty &&
+                                value.custDetailsList.length != 0 && value.custDetailsList!=[]){
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -288,7 +290,7 @@ class _ADDCUSTOMERState extends State<ADDCUSTOMER> {
                                     ],
                                   );
                                 },
-                              );
+                              );}
                             }
                           }); // );
                         }

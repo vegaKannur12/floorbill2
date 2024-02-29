@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:floor_billing/SCREENs/FLOORBILL/HOME/homeFloorBilling.dart';
 import 'package:floor_billing/SCREENs/ITEMDATA/viewcart.dart';
 import 'package:floor_billing/components/custom_snackbar.dart';
 import 'package:floor_billing/controller/controller.dart';
@@ -135,13 +136,13 @@ class _ItemAddPageState extends State<ItemAddPage> {
                     ),
                     child: const Text('Yes'),
                     onPressed: () {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                      // WidgetsBinding.instance.addPostFrameCallback((_) {
                         Provider.of<Controller>(context, listen: false)
                             .clearCardID("0");
                         Provider.of<Controller>(context, listen: false)
                             .clearunsaved();
                         Navigator.of(context).pop(true);
-                      });
+                      // });
                     },
                   ),
                 ],
@@ -153,8 +154,9 @@ class _ItemAddPageState extends State<ItemAddPage> {
           }
         } else {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Provider.of<Controller>(context, listen: false).clearCardID("0");
-            Navigator.of(context).pop(true);
+             Provider.of<Controller>(context, listen: false).clearCardID("0");
+             Navigator.of(context).pop(true);
+             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeFloorBill()));
           });
         }
       },
