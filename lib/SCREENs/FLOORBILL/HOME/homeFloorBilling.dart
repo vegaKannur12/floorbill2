@@ -154,12 +154,19 @@ class _HomeFloorBillState extends State<HomeFloorBill> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        // Text(
+                        //   value.disply_name.toString().toUpperCase(),
+                        //   style: TextStyle(
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.blue,
+                        //       fontSize: 20),
+                        // ),
                         Text(
-                          value.disply_name.toString().toUpperCase(),
+                          value.card_id.toString().toUpperCase(),
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                              fontSize: 20),
+                           
+                              color: Color.fromARGB(255, 54, 97, 138),
+                              fontSize: 10),
                         ),
                       ],
                     ),

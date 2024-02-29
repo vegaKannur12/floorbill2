@@ -7,6 +7,7 @@ import 'package:floor_billing/SCREENs/db_selection.dart';
 import 'package:floor_billing/MODEL/registration_model.dart';
 import 'package:floor_billing/authentication/login.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -106,6 +107,7 @@ class Controller extends ChangeNotifier {
   bool showdata = false;
   int slot_id = 0;
   Text baggerror = Text("");
+  Text matcherror = Text("");
   Text salesError = Text("ytuytu");
   Text barcodeerror = Text("");
   Text adduserError = Text("");
@@ -247,9 +249,7 @@ class Controller extends ChangeNotifier {
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
-              } 
-              else 
-              {
+              } else {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => DBSelection()),
@@ -438,8 +438,8 @@ class Controller extends ChangeNotifier {
       print("caaaaaaaaaaaaaarrrrrrrttttttttt$map");
       cart_id = map[0]["CartId"];
       notifyListeners();
-      print("cart iddddddddd ====== $cart_id");//note chane
-      
+      print("cart iddddddddd ====== $cart_id"); //note chane
+
       // SqlConn.disconnect();
     } on PlatformException catch (e) {
       print("PlatformException occurredcttr: $e");
@@ -690,6 +690,14 @@ class Controller extends ChangeNotifier {
     notifyListeners();
   }
 
+  setmismatchError(String err) {
+    matcherror = Text(
+      err,
+      style: TextStyle(color: Color.fromARGB(255, 245, 209, 206), fontSize: 9),
+    );
+    notifyListeners();
+  }
+
   setSalesrror(String err) {
     salesError = Text(
       err,
@@ -774,7 +782,7 @@ class Controller extends ChangeNotifier {
     print("Salesman List--$salesManlist");
   }
 
-  getItemDetails(BuildContext context, String barcodedata) async {
+  Future<void> getItemDetails(BuildContext context, String barcodedata) async {
     // await initYearsDb(context, "");nvbnb
     // setBarerror("");
 
@@ -906,11 +914,11 @@ class Controller extends ChangeNotifier {
       print("An unexpected error occurred: $e");
       // Handle other types of exceptions
     } finally {
-      if (SqlConn.isConnected) {
+      if (!SqlConn.isConnected) {
         // If connected, do not pop context as it may dismiss the error dialog
         // Navigator.pop(context);
-        debugPrint("Database connected, not popping context.");
-      } else {
+        //   debugPrint("Database connected, not popping context.");
+        // } else {
         // If not connected, pop context to dismiss the dialog
         showDialog(
           context: context,
@@ -967,40 +975,42 @@ class Controller extends ChangeNotifier {
       print("Saved result--$savedresult");
       await getprintingFBdetails(dt, os!, int.parse(card_id),
           int.parse(savedresult[0]['FB_no'].toString()));
-    } on PlatformException catch (e) {
-      print("PlatformException occurredcttr: $e");
-      SqlConn.disconnect();
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Connection Lost...! ",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text('Reconnect'),
-                onPressed: () async {
-                  await initYearsDb(context, "");
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-      print(e);
-      return null;
-    } catch (e) {
+    }
+    // on PlatformException catch (e) {
+    //   print("PlatformException occurredcttr: $e");
+    //   SqlConn.disconnect();
+    //   showDialog(
+    //     context: context,
+    //     builder: (context) {
+    //       return AlertDialog(
+    //         title: Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //           children: [
+    //             Text(
+    //               "Connection Lost...! ",
+    //               style: TextStyle(fontSize: 18),
+    //             ),
+    //           ],
+    //         ),
+    //         actions: <Widget>[
+    //           TextButton(
+    //             style: TextButton.styleFrom(
+    //               textStyle: Theme.of(context).textTheme.labelLarge,
+    //             ),
+    //             child: const Text('Reconnect'),
+    //             onPressed: () async {
+    //               await initYearsDb(context, "");
+    //               Navigator.of(context).pop();
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    //   print(e);
+    //   return null;
+    // }
+    catch (e) {
       print("An unexpected error occurred: $e");
       // Handle other types of exceptions
     }
@@ -1344,83 +1354,88 @@ class Controller extends ChangeNotifier {
       String bch, double qt, double dic, int status) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     os = await prefs.getString("os");
+    print("cccccccccccccccccccccccccccccccccccccc$card_id");
     try {
-      if (status == 0) {
-        print(
-            "update data====== ${'Flt_Update_FB_Cart $cart_id, $dd, $card_id, $cus_name, $cus_contact, $slot_id, $cartrow, $sm, $os, $bch ,$qt , $srate, $dic, $status'}");
-        var res = await SqlConn.readData(
-            "Flt_Update_FB_Cart '$cart_id','$dd','$card_id','$cus_name','$cus_contact',0,$cartrow,'$sm','$os','$bch','$qt','$srate','$dic',$status");
-        var map = jsonDecode(res);
-        if (map.isNotEmpty) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Added to cart",
-                      style: TextStyle(fontSize: 18),
+      int carint = int.parse(card_id);
+      if (carint > 0 && carint != ' ' && carint != '') {
+        if (status == 0) {
+          print(
+              "update data====== ${'Flt_Update_FB_Cart $cart_id, $dd, $card_id, $cus_name, $cus_contact, $slot_id, $cartrow, $sm, $os, $bch ,$qt , $srate, $dic, $status'}");
+          var res = await SqlConn.readData(
+              "Flt_Update_FB_Cart '$cart_id','$dd','$card_id','$cus_name','$cus_contact',0,$cartrow,'$sm','$os','$bch','$qt','$srate','$dic',$status");
+          var map = jsonDecode(res);
+          if (map.isNotEmpty) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Added to cart",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      child: const Text('Ok'),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                      },
                     ),
                   ],
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    child: const Text('Ok'),
-                    onPressed: () async {
-                      Navigator.of(context).pop();
-                    },
+                );
+              },
+            );
+            print("update Map------------>>$map");
+            clearSelectedBarcode(context);
+            notifyListeners();
+          }
+        } else {
+          print(
+              "delete data====== ${'Flt_Update_FB_Cart $cart_id, $dd, $card_id, $cus_name, $cus_contact, $slot_id, $cartrow, $sm, $os, $bch ,$qt , $srate, $dic, $status'}");
+          var res = await SqlConn.readData(
+              "Flt_Update_FB_Cart '$cart_id','$dd','$card_id','$cus_name','$cus_contact','$slot_id',$cartrow,'$sm','$os','$bch','$qt','$srate','$dic',$status");
+          var map = jsonDecode(res);
+          if (map.isNotEmpty) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Item deleted",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
                   ),
-                ],
-              );
-            },
-          );
-          print("update Map------------>>$map");
-          clearSelectedBarcode(context);
-          notifyListeners();
+                  actions: <Widget>[
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: Theme.of(context).textTheme.labelLarge,
+                      ),
+                      child: const Text('Ok'),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+            print("update Map------------>>$map");
+          }
         }
       } else {
-        print(
-            "delete data====== ${'Flt_Update_FB_Cart $cart_id, $dd, $card_id, $cus_name, $cus_contact, $slot_id, $cartrow, $sm, $os, $bch ,$qt , $srate, $dic, $status'}");
-        var res = await SqlConn.readData(
-            "Flt_Update_FB_Cart '$cart_id','$dd','$card_id','$cus_name','$cus_contact','$slot_id',$cartrow,'$sm','$os','$bch','$qt','$srate','$dic',$status");
-        var map = jsonDecode(res);
-        if (map.isNotEmpty) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Item deleted",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    child: const Text('Ok'),
-                    onPressed: () async {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-          print("update Map------------>>$map");
-        }
+        print("cardid error===!!");
       }
-
       // SqlConn.disconnect();
     }
     // on PlatformException catch (e) {
@@ -1519,8 +1534,7 @@ class Controller extends ChangeNotifier {
       print("custdata------------>>$res");
 
       custDetailsList.clear();
-      for (var item in map) 
-      {
+      for (var item in map) {
         custDetailsList.add(item);
       }
       print("customer Data List ==$custDetailsList");
@@ -1535,7 +1549,8 @@ class Controller extends ChangeNotifier {
       } else {
         //  prefs.setInt("CardID", custDetailsList[0]['CardID']);
         igno = false;
-        card_id = custDetailsList[0]['CardID'].toString();notifyListeners();
+        card_id = custDetailsList[0]['CardID'].toString();
+        notifyListeners();
         setcusnameAndPhone(custDetailsList[0]['Cust_Name'].toString().trim(),
             custDetailsList[0]['Cust_Phone'].toString().trim(), context);
         getUsedBags(context, date, card_id);
@@ -1545,7 +1560,7 @@ class Controller extends ChangeNotifier {
       notifyListeners();
       print("card ID--Name---Contact------->$card_id--$cus_name--$cus_contact");
     }
-    
+
     // on PlatformException catch (e) {
     //   print("PlatformException occurredcttr: $e");
     //   SqlConn.disconnect();
@@ -1693,12 +1708,9 @@ class Controller extends ChangeNotifier {
             );
           },
         );
+      } else {
+        print("Not Created");
       }
-      else{
-print("Not Created");
-      }
-
-      
     }
     // on PlatformException catch (e) {
     //   print("PlatformException occurredcttr: $e");
@@ -1978,6 +1990,15 @@ print("Not Created");
         print('unsaved total :$unsaved_tot');
         notifyListeners();
       }
+      if (unsavedList.length != 0) {
+        if (card_id != unsavedList[0]["Cart_Card_ID"].toString()) {
+          card_id = unsavedList[0]["Cart_Card_ID"].toString();
+          print("ID mismatch");
+          setmismatchError("err");
+          notifyListeners();
+        }
+      }
+
       cartloading = false;
 
       notifyListeners();
@@ -2016,6 +2037,7 @@ print("Not Created");
     //   // Handle the PlatformException here
     //   // You can log the exception, display an error message, or take other appropriate actions
     // }
+
     catch (e) {
       print("An unexpected error occurred: $e");
       // Handle other types of exceptions
@@ -2550,12 +2572,11 @@ print("Not Created");
                                   Text(" - "),
                                   Row(
                                     children: [
-                                     
-                                      Text("${details['Cust_Phone']
-                                          .toString()
-                                          .trimLeft()} / "),
-                                           Text(
-                                          "${details['Cust_Name'].toString().trimLeft()}",),
+                                      Text(
+                                          "${details['Cust_Phone'].toString().trimLeft()} / "),
+                                      Text(
+                                        "${details['Cust_Name'].toString().trimLeft()}",
+                                      ),
                                     ],
                                   )
                                 ],
@@ -2579,11 +2600,11 @@ print("Not Created");
                                 height: 27,
                                 width: 27,
                               ),
-                              Text(
-                                 " ${slt.toString()}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis
-                              )
+                              Text(" ${slt.toString()}",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                  overflow: TextOverflow.ellipsis)
                             ],
                           ),
                           SizedBox(
@@ -2598,11 +2619,11 @@ print("Not Created");
                                 width: 27,
                               ),
                               Text(
-                                 " ${fb.toString()}",
+                                " ${fb.toString()}",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,overflow: TextOverflow.ellipsis
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    overflow: TextOverflow.ellipsis),
                               ),
                             ],
                           ),
@@ -2627,7 +2648,8 @@ print("Not Created");
                                     context, "Item Delevered...", "");
                               },
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color.fromARGB(255, 189, 104, 104)),
+                                  backgroundColor:
+                                      Color.fromARGB(255, 189, 104, 104)),
                               child: Text(
                                 "DELIVER",
                                 style: TextStyle(

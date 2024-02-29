@@ -135,11 +135,13 @@ class _ItemAddPageState extends State<ItemAddPage> {
                     ),
                     child: const Text('Yes'),
                     onPressed: () {
-                      Provider.of<Controller>(context, listen: false)
-                          .clearCardID("0");
-                      Provider.of<Controller>(context, listen: false)
-                          .clearunsaved();
-                      Navigator.of(context).pop(true);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Provider.of<Controller>(context, listen: false)
+                            .clearCardID("0");
+                        Provider.of<Controller>(context, listen: false)
+                            .clearunsaved();
+                        Navigator.of(context).pop(true);
+                      });
                     },
                   ),
                 ],
@@ -150,8 +152,10 @@ class _ItemAddPageState extends State<ItemAddPage> {
             Navigator.of(context).pop();
           }
         } else {
-          Provider.of<Controller>(context, listen: false).clearCardID("0");
-          Navigator.of(context).pop(true);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Provider.of<Controller>(context, listen: false).clearCardID("0");
+            Navigator.of(context).pop(true);
+          });
         }
       },
       child: Scaffold(
@@ -160,10 +164,19 @@ class _ItemAddPageState extends State<ItemAddPage> {
           backgroundColor: Colors.teal,
           title: Consumer<Controller>(
             builder: (BuildContext context, Controller value, Widget? child) =>
+                Row(
+              children: [
                 Text(
-              "${widget.cardno.toString()}",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  "${widget.cardno.toString()} ",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                Text(
+                  "${value.card_id.toString()}",
+                  style: TextStyle(
+                      fontSize: 10, color: Color.fromARGB(255, 41, 90, 94)),
+                ),
+              ],
             ),
           ),
           actions: [
@@ -291,6 +304,29 @@ class _ItemAddPageState extends State<ItemAddPage> {
               },
             ),
           ],
+        ),
+        bottomNavigationBar: Consumer<Controller>(
+          builder: (BuildContext context, Controller value, Widget? child) {
+            return Container(
+              height: 20,
+              // color: Colors.amber,
+              child: Row(
+                children: [
+                  Text(
+                    "${value.card_id}",
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  value.unsavedList.length!=0?
+                  Text(
+                    "/${value.unsavedList[0]['Cart_Card_ID'].toString()} ",
+                    style: TextStyle(fontSize: 9),
+                  ):Text(""),
+                  SizedBox(height: 30,child:value.matcherror ,)
+                  
+                ],
+              ),
+            );
+          },
         ),
         body: Consumer<Controller>(
             builder: (context, value, child) => Padding(

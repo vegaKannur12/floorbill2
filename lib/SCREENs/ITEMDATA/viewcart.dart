@@ -59,10 +59,14 @@ class _ViewCartPageState extends State<ViewCartPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        "${widget.cardno.toString()}",
+                        "${widget.cardno.toString()} ",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
+                      ), Text(
+                  "${value.card_id.toString()}",
+                  style: TextStyle(fontSize: 10,
+                      color: Color.fromARGB(255, 143, 136, 71)),
+                ),
                     ],
                   ),
                 ),
