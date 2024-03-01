@@ -267,7 +267,6 @@ class _HomeFloorBillState extends State<HomeFloorBill> {
                                 ],
                               ),
                             ),
-
                             // Container(height: 20,width: size.width,
                             // )
                           ],
