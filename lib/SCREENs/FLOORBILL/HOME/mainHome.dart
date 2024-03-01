@@ -3,6 +3,8 @@ import 'package:floor_billing/SCREENs/FLOORBILL/1deliverybill.dart';
 import 'package:floor_billing/SCREENs/FLOORBILL/HOME/DELIVERY/del1.dart';
 import 'package:floor_billing/SCREENs/FLOORBILL/HOME/homeFloorBilling.dart';
 import 'package:floor_billing/SCREENs/FLOORBILL/deliverybill.dart';
+import 'package:floor_billing/SCREENs/FLOORBILL/floorBill.dart';
+import 'package:floor_billing/SCREENs/ITEMDATA/itemsearch.dart';
 import 'package:floor_billing/components/textfldCommon.dart';
 import 'package:floor_billing/controller/controller.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +35,8 @@ class _MainHomeState extends State<MainHome> {
     Menus(iconname: 'FLOOR BILL', iconimg: 'assets/Fb.png'),
     // Menus(iconname: 'DELIVERY BILL', iconimg: 'assets/Del.png'),
     // Menus(iconname: 'FREE/ALOT SlOT', iconimg: 'assets/lock.png'),
-    // Menus(iconname: 'FREE/ALOT SlOT', iconimg: 'assets/lock.png'),
-    // Menus(iconname: 'ITEM SEARCH', iconimg: 'assets/lock.png'),
+    Menus(iconname: 'FLOORBILL HISTORY', iconimg: 'assets/lock.png'),
+    Menus(iconname: 'ITEM SEARCH', iconimg: 'assets/lock.png'),
   ];
 
   @override
@@ -52,8 +54,11 @@ class _MainHomeState extends State<MainHome> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    print("width = ${size.width}");
+    print("height = ${size.height}");
     return PopScope(
-       canPop: false,
+      canPop: false,
       onPopInvoked: (bool didPop) {
         if (!didPop) {
           Navigator.of(context).pop(true);
@@ -80,7 +85,7 @@ class _MainHomeState extends State<MainHome> {
                     InkWell(
                       child: Container(
                         height: 100,
-                        width: 280,
+                        width: size.width/1.2,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.amber,
@@ -97,7 +102,7 @@ class _MainHomeState extends State<MainHome> {
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: Row(
+                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 SizedBox(
                                     height: 40,
@@ -106,14 +111,16 @@ class _MainHomeState extends State<MainHome> {
                                       l[index].iconimg.toString(),
                                     )),
                                 SizedBox(
-                                  width: 20,
+                                  width: 10,
                                 ),
-                                Text(
-                                  l[index].iconname.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20),
+                                SizedBox(width: size.width/1.6,
+                                  child: Text(
+                                   "${l[index].iconname.toString()}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20),overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
                             ),
@@ -140,11 +147,19 @@ class _MainHomeState extends State<MainHome> {
                           );
                         } else if (index == 2) {
                           Provider.of<Controller>(context, listen: false)
-                              .getDELList("0", context);
+                              .getFBList(date.toString(), context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FirstDeleveryBill()),
+                                builder: (context) => FloorBill()),
+                          );
+                        } else if (index == 3) {
+                          Provider.of<Controller>(context, listen: false)
+                              .clearSelectedBarcode(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ITEMSearch()),
                           );
                         }
                       },

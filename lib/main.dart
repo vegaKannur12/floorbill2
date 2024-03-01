@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:floor_billing/SCREENs/FLOORBILL/HOME/homeFloorBilling.dart';
 import 'package:floor_billing/SCREENs/FLOORBILL/HOME/mainHome.dart';
+import 'package:floor_billing/SCREENs/ITEMDATA/itemsearch.dart';
 import 'package:floor_billing/SCREENs/ITEMDATA/viewcart.dart';
 import 'package:floor_billing/SCREENs/db_selection.dart';
 import 'package:floor_billing/SCREENs/splashscreen.dart';
@@ -125,7 +126,9 @@ class MyApp extends StatelessWidget {
         '/floorhome': (context) => HomeFloorBill(),
         '/mainpage': (context) => MainHome(),
       },
-      home: SplashScreen(),
+      home:
+      //  ITEMSearch(),
+      SplashScreen(),
       // LoginPage(),
       // Registration(),
       // const HomeFloorBill(),
