@@ -62,7 +62,7 @@ class _FloorBillWidgetState extends State<FloorBillWidget> {
                                 color: Color.fromARGB(255, 224, 235, 166),
                                 child: Center(
                                   child: Text(
-                                    widget.list[index]['Series'],
+                                    widget.list[index]['Series'],overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
@@ -144,12 +144,14 @@ class _FloorBillWidgetState extends State<FloorBillWidget> {
                                   SizedBox(
                                     width: 5,
                                   ),
-                                  Text(
-                                    widget.list[index]['Cus_Name']
-                                        .toString()
-                                        .trimLeft(),
-                                    // widget.slotname,
-                                    style: TextStyle(fontSize: 18),
+                                  SizedBox(width: size.width/2.5,
+                                    child: Text(
+                                     "${ widget.list[index]['Cus_Name']
+                                          .toString()
+                                          .trimLeft()}",overflow: TextOverflow.ellipsis,
+                                      // widget.slotname,
+                                      style: TextStyle(fontSize: 18),
+                                    ),
                                   )
                                 ],
                               ),
@@ -164,7 +166,7 @@ class _FloorBillWidgetState extends State<FloorBillWidget> {
                                     width: 5,
                                   ),
                                   Text(
-                                    "\u20B9 ${widget.list[index]['Amount'].toString()}",
+                                    "${widget.list[index]['Amount'].toStringAsFixed(2)} \u20B9",
                                     // widget.slotname,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,

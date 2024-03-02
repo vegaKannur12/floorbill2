@@ -231,13 +231,15 @@ class _ViewCartPageState extends State<ViewCartPage> {
                                                           color: Colors.black),
                                                     ),
                                                   ),
-                                                  Text(
-                                                    "${value.unsavedList[index]["Prod_Name"].toString().trimLeft()}",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 17,
-                                                        color: Colors.brown),
+                                                  SizedBox(width: size.width/1.5,
+                                                    child: Text(
+                                                      "${value.unsavedList[index]["Prod_Name"].toString().trimLeft()}",overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 17,
+                                                          color: Colors.brown),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -273,7 +275,7 @@ class _ViewCartPageState extends State<ViewCartPage> {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Text("Discount: "),
+                                                      Text("Discount : "),
                                                       Text(
                                                           "${value.unsavedList[index]["DiscValue"].toStringAsFixed(2)} \u20B9 "),
                                                     ],

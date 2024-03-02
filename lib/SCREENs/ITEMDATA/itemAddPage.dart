@@ -476,8 +476,10 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                             child: ListTile(
                                                               title: Row(
                                                                 children: [
-                                                                  Text(
-                                                                      "BARCODE    : "),
+                                                                  SizedBox(  width: 90,
+                                                                    child: Text(
+                                                                        "BARCODE"),
+                                                                  ),Text(": "),
                                                                   Text(
                                                                     "${value.selectedBarcodeList[index]["Barcode"].toString().trimLeft()}",
                                                                     style: TextStyle(
@@ -490,38 +492,64 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                           ),
                                                           SizedBox(
                                                             height: 35,
-                                                            child: ListTile(
-                                                              title: Text(
-                                                                "EAN             : ${value.selectedBarcodeList[index]["EAN"].toString().trimLeft()}",
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                             child: ListTile(
+                                                          title: Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 90,
+                                                                child: Text("EAN"),
                                                               ),
-                                                            ),
+                                                              Text(": "),
+                                                              SizedBox(
+                                                                width:
+                                                                    size.width /
+                                                                        1.8,
+                                                                child: Text(
+                                                                  "${value
+                                                                      .selectedBarcodeList[
+                                                                          index]
+                                                                          [
+                                                                          "EAN"]
+                                                                      .toString()
+                                                                      .trimLeft()}",
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
                                                           ),
                                                           SizedBox(
-                                                            height: 35,
-                                                            child: ListTile(
-                                                              title: Row(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    height:
-                                                                        25,
-                                                                    width:
-                                                                        105,
-                                                                    child: Text(
-                                                                        "Item Name  : "),
-                                                                  ),
-                                                                  Text(
-                                                                    "${value.selectedBarcodeList[index]["Item_Name"].toString().trimLeft()}",
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                  ),
-                                                                ],
+                                                        height: 35,
+                                                        child: ListTile(
+                                                          title: Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 90,
+                                                                child: Text(
+                                                                  "Item Name",
+                                                                  style:
+                                                                      TextStyle(),
+                                                                ),
+                                                              ),Text(": "),
+                                                              SizedBox(
+                                                                width:
+                                                                    size.width /
+                                                                        1.8,
+                                                                child: Text(
+                                                                  "${value.selectedBarcodeList[index]["Item_Name"].toString().trimLeft()}",
+                                                                  style: TextStyle(
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis),
+                                                                ),
                                                               ),
-                                                            ),
+                                                            ],
                                                           ),
+                                                        ),
+                                                      ),
                                                           SizedBox(
                                                             height: 35,
                                                             child: ListTile(
@@ -576,9 +604,9 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                                           Row(
                                                                         children: [
                                                                           SizedBox(
-                                                                              height: 25,
-                                                                              width: 160,
-                                                                              child: Text("Discount     :  ")),
+                                                                             width:90,
+                                                                              child: Text("Discount")),
+                                                                              Text(":              "),
                                                                           Row(
                                                                             children: [
                                                                               Container(
@@ -622,9 +650,10 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                                           Row(
                                                                         children: [
                                                                           SizedBox(
-                                                                              height: 25,
-                                                                              width: 125,
-                                                                              child: Text("Quantity      :")),
+                                                                          
+                                                                              width: 90,
+                                                                              child: Text("Quantity")),
+                                                                              Text(":      "),
                                                                           Row(
                                                                             children: [
                                                                               InkWell(
@@ -700,12 +729,12 @@ class _ItemAddPageState extends State<ItemAddPage> {
                                                                           Row(
                                                                         children: [
                                                                           SizedBox(
-                                                                              height: 25,
-                                                                              width: 135,
+                                                                              
+                                                                              width: 90,
                                                                               child: Text(
-                                                                                "Salesman   : ",
+                                                                                "Salesman",
                                                                                 style: TextStyle(fontWeight: FontWeight.w800),
-                                                                              )),
+                                                                              )), Text(":      "),
                                                                           SizedBox(
                                                                             height: 50,
                                                                             width: 100,
